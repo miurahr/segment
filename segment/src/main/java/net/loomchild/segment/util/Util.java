@@ -13,15 +13,17 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+
 import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -54,7 +56,7 @@ public class Util {
 			.compile("(?<=(?<!\\\\)(?:\\\\\\\\){0,100})\\*");
 
 	private static final Pattern PLUS_PATTERN = Pattern
-			.compile("(?<=(?<!\\\\)(?:\\\\\\\\){0,100})(?<![\\?\\*\\+]|\\{[0-9],?[0-9]?\\}?\\})\\+");
+			.compile("(?<=(?<!\\\\)(?:\\\\\\\\){0,100})(?<![?*+]|\\{[0-9],?[0-9]?\\}?\\})\\+");
 
 	private static final Pattern RANGE_PATTERN = Pattern
 			.compile("(?<=(?<!\\\\)(?:\\\\\\\\){0,100})\\{\\s*([0-9]+)\\s*,\\s*\\}");
@@ -70,13 +72,8 @@ public class Util {
 	 * @throws IORuntimeException if IO error occurs
 	 */
 	public static Reader getReader(InputStream inputStream) {
-		try {
-			Reader reader = new InputStreamReader(inputStream, "utf-8");
-			return reader;
-		} catch (UnsupportedEncodingException e) {
-			throw new IORuntimeException(e);
-		}
-	}
+        return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+    }
 
 	/**
 	 * @param outputStream
@@ -84,13 +81,8 @@ public class Util {
 	 * @throws IORuntimeException if IO error occurs
 	 */
 	public static Writer getWriter(OutputStream outputStream) {
-		try {
-			Writer writer = new OutputStreamWriter(outputStream, "utf-8");
-			return writer;
-		} catch (UnsupportedEncodingException e) {
-			throw new IORuntimeException(e);
-		}
-	}
+        return new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+    }
 
 	/**
 	 * Opens a file for reading and returns input stream associated with it.
@@ -322,8 +314,7 @@ public class Util {
 	 */
 	public static JAXBContext getContext(Class<?>... classesToBeBound) {
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(classesToBeBound);
-			return jaxbContext;
+            return JAXBContext.newInstance(classesToBeBound);
 		} catch (JAXBException e) {
 			throw new XmlException("Error creating JAXB context", e);
 		}
@@ -485,7 +476,7 @@ public class Util {
 	}
 
 	public static String createLookbehindPattern(String pattern, int maxLenght) {
-		if (pattern.length() == 0) {
+		if (pattern.isEmpty()) {
 			return pattern;
 		}
 		return "(?<=" + Util.finitize(pattern, maxLenght) + ")";
@@ -503,8 +494,6 @@ public class Util {
 
 	/**
 	 * Set default compilation pattern flags.
-	 *
-	 * @param patternFlags
 	 */
 	public static void setDefaultPatternFlags(int defaultPatternFlags) {
 		Util.defaultPatternFlags = defaultPatternFlags;

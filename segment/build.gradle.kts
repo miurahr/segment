@@ -40,12 +40,9 @@ dependencies {
     implementation(libs.jaxb4.api)
     runtimeOnly(libs.jaxb4.runtime)
 
-    implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("com.sun.xml.bind:jaxb-core:2.3.0.1")
-    implementation("com.sun.xml.bind:jaxb-impl:2.3.3")
-
-    // XJC tool for schema code generation (Gradle replacement for maven-jaxb2-plugin)
-    "xjc"("com.sun.xml.bind:jaxb-xjc:2.3.3")
+    "xjc"(libs.jaxb4.api)
+    "xjc"(libs.jaxb4.runtime)
+    "xjc"(libs.jaxb4.xjc)
 
     // Test
     testImplementation("junit:junit:4.13.1")

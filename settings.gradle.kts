@@ -4,3 +4,4 @@ plugins {
 
 rootProject.name = "segment-parent"
 include("segment")
+include("segment-ui")

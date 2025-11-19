@@ -25,10 +25,6 @@ java {
     withJavadocJar()
 }
 
-group = "tokyo.northside"
-version = "2.0.5-SNAPSHOT"
-description = "Library used to split text into segments."
-
 repositories {
     mavenCentral()
 }
@@ -96,7 +92,7 @@ publishing {
             pom {
                 name.set("segment")
                 description.set(project.description)
-                url.set("https://github.com/loomchild/segment")
+                url.set("https://github.com/miurahr/segment")
 
                 licenses {
                     license {
@@ -110,12 +106,16 @@ publishing {
                         name.set("Jarek Lipski")
                         email.set("pub@loomchild.net")
                     }
+                    developer {
+                        name.set("Hiroshi Miura")
+                        email.set("miurahr@linux.com")
+                    }
                 }
 
                 scm {
-                    connection.set("scm:git:ssh://git@github.com/loomchild/segment.git")
-                    developerConnection.set("scm:git:ssh://git@github.com/loomchild/segment.git")
-                    url.set("https://github.com/loomchild/segment")
+                    connection.set("scm:git:ssh://git@github.com/miurahr/segment.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/miurahr/segment.git")
+                    url.set("https://github.com/miurahr/segment")
                 }
             }
         }

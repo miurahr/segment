@@ -1,7 +1,10 @@
+import com.github.spotbugs.snom.Confidence
+
 plugins {
     `java-library`
     `maven-publish`
     signing
+    alias(libs.plugins.spotbugs)
 }
 
 repositories {
@@ -18,29 +21,24 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(11)
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 group = "tokyo.northside"
 version = "2.0.5-SNAPSHOT"
 description = "Library used to split text into segments."
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-    withSourcesJar()
-    withJavadocJar()
-}
-
 repositories {
     mavenCentral()
 }
 
-configurations {
-    create("xjc")
-}
+val xjc: Configuration by configurations.creating
 
 dependencies {
-    api("commons-logging:commons-logging:1.2")
+    implementation(libs.commons.logging)
+    implementation(libs.jaxb4.api)
+    runtimeOnly(libs.jaxb4.runtime)
 
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("com.sun.xml.bind:jaxb-core:2.3.0.1")
@@ -53,53 +51,50 @@ dependencies {
     testImplementation("junit:junit:4.13.1")
 }
 
-val generatedJaxbDir = layout.buildDirectory.dir("generated/sources/xjc/java")
+val generatedJaxbDir = layout.buildDirectory.dir("generated/xjc/main/java")
 
 // Generate JAXB classes from srx20.xsd into package net.loomchild.segment.srx.io.bind
-val generateJaxb by tasks.registering(JavaExec::class) {
+val generateJaxb by tasks.register("generateJaxb", JavaExec::class) {
     group = "code generation"
     description = "Generates JAXB classes from SRX schema using XJC"
     val outDir = generatedJaxbDir.get().asFile
     outputs.dir(outDir)
     classpath = configurations.getByName("xjc")
-    mainClass.set("com.sun.tools.xjc.Driver")
+    mainClass.set("com.sun.tools.xjc.XJCFacade")
     args = listOf(
         "-d", outDir.absolutePath,
         "-p", "net.loomchild.segment.srx.io.bind",
-        // Match Maven's include: net/loomchild/segment/res/xml/srx20.xsd
         file("src/main/resources/net/loomchild/segment/res/xml/srx20.xsd").absolutePath
     )
 }
 
 sourceSets {
     main {
-        java.srcDir(generatedJaxbDir)
+        java {
+            srcDir(listOf(generateJaxb, "src/main/java"))
+        }
     }
 }
 
-// Ensure code is generated before compilation
 tasks.compileJava {
     dependsOn(generateJaxb)
     options.encoding = "UTF-8"
 }
 
-tasks.javadoc {
-    options.encoding = "UTF-8"
+tasks.withType<Javadoc>() {
+    setFailOnError(false)
+    options {
+        encoding = "UTF-8"
+        jFlags("-Duser.language=en")
+    }
     // Exclude generated JAXB package from Javadoc like in Maven config
     exclude("net/loomchild/segment/srx/io/bind/**")
-}
-
-// Create a tests jar similar to Maven maven-jar-plugin test-jar goal
-val testJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("tests")
-    from(sourceSets.test.get().output)
 }
 
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifact(testJar)
 
             pom {
                 name.set("segment")
@@ -128,27 +123,50 @@ publishing {
             }
         }
     }
+}
 
-    repositories {
-        // Mirror Maven distributionManagement
-        maven {
-            name = "OSSRH"
-            url = uri(
-                if (version.toString().endsWith("SNAPSHOT"))
-                    "https://oss.sonatype.org/content/repositories/snapshots"
-                else
-                    "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            )
-            credentials {
-                // Expected to be provided via gradle.properties or environment variables
-                // ossrhUsername / ossrhPassword are common variable names
-                username = findProperty("ossrhUsername") as String? ?: System.getenv("OSSRH_USERNAME")
-                password = findProperty("ossrhPassword") as String? ?: System.getenv("OSSRH_PASSWORD")
-            }
-        }
+tasks.withType(Jar::class) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.jar {
+    manifest {
+        attributes("Automatic-Module-Name" to "net.loomchild.segment")
     }
 }
 
+val signKey = listOf("signingKey", "signing.keyId", "signing.gnupg.keyName").find {project.hasProperty(it)}
+tasks.withType<Sign> {
+    onlyIf { signKey != null && !project.version.toString().endsWith("-SNAPSHOT") }
+}
 signing {
+    when (signKey) {
+        "signingKey" -> {
+            val signingKey: String? by project
+            val signingPassword: String? by project
+            useInMemoryPgpKeys(signingKey, signingPassword)
+        }
+        "signing.keyId" -> {
+            val keyId: String? by project
+            val password: String? by project
+            val secretKeyRingFile: String? by project // e.g. gpg --export-secret-keys > secring.gpg
+            useInMemoryPgpKeys(keyId, password, secretKeyRingFile)
+        }
+        "signing.gnupg.keyName" -> {
+            useGpgCmd()
+        }
+    }
     sign(publishing.publications["mavenJava"])
+}
+
+spotbugs {
+    reportLevel = Confidence.valueOf("HIGH")
+    tasks.spotbugsMain {
+        reports.create("html") {
+            required.set(true)
+        }
+    }
+    tasks.spotbugsTest {
+        enabled = false
+    }
 }

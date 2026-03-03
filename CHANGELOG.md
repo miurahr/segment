@@ -10,3 +10,4 @@
 * Updated dependencies.
 * Migrate publishing on Sonatype Portal.
 * Change group id to "tokyo.northside"
+* Provide CLI command scripts by Gradle application generations.

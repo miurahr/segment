@@ -5,6 +5,7 @@ plugins {
 
 application {
     mainClass = "net.loomchild.segment.ui.console.Segment"
+    applicationName = "segment"
 }
 
 repositories {
@@ -17,7 +18,7 @@ dependencies {
     implementation(libs.commons.logging)
 }
 
-description = "segment-ui"
+description = "The segment CLI command."
 
 java {
     toolchain {

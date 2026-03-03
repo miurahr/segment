@@ -83,12 +83,6 @@ The tool accepts some command line parameters, use bin/segment -h for details.
 Underneath it uses XSLT stylesheet which can be found in resources directory and used 
 separately with any XSLT processor.
 
-## Testing
-
-The program has integrated unit tests. To run them execute:
-
-    bin/segment --test
-
 ## Data formats
 
 ### Input

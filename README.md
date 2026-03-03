@@ -7,21 +7,22 @@ Splitting rules are read from SRX file, which is standard format for this task.
 
 ## Requirements
 
-To run the project Java Runtime Environment (JRE) 1.5 is required.
-To build the project from source Java Software Development Kit (JDK) 1.5 and Ant tool are required. 
+To run the project Java Runtime Environment (JRE) 11 is required.
+To build the project from source Java Software Development Kit (JDK) 17 is required. 
 Program should run on any operating system supported by Java. 
 The helper startup scripts were written for Unix and Windows.
 
 ## Library
 
-Segment library is available on [Maven central](http://search.maven.org/#search|ga|1|net.loomchild.segment).
-See [pom.xml](segment/pom.xml) for details.
+Segment library is available on [Maven central](https://mvnrepository.com/artifact/tokyo.northside.segment).
 
 ## Development
 
 In order to compile the project clone the repository and run Maven in both segment and segment-ui subdirectiories:
 
-    mvn clean install
+```console
+    gradle build
+```
 
 This will generate the binary ZIP version in segment-ui/target/.
 

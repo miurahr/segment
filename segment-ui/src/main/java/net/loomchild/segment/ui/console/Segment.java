@@ -75,8 +75,6 @@ public class Segment {
 	public static final int WORD_LENGTH = 2;
 	public static final int SENTENCE_LENGTH = 5;
 
-	public static final String TEST_SUITE_CLASS_NAME = "net.loomchild.segment.SegmentTestSuite";
-
 	private Random random;
 	private String text;
 	private boolean stdinReader;
@@ -99,7 +97,7 @@ public class Segment {
 		Options options = createOptions();
 		HelpFormatter helpFormatter = new HelpFormatter();
 		CommandLineParser parser = new PosixParser();
-		CommandLine commandLine = null;
+		CommandLine commandLine;
 
 		try {
 
@@ -107,8 +105,6 @@ public class Segment {
 
 			if (commandLine.hasOption('h')) {
 				printHelp(options, helpFormatter);
-			} else if (commandLine.hasOption('z')) {
-				test();
 			} else if (commandLine.hasOption('t')) {
 				transform(commandLine);
 			} else {
@@ -138,7 +134,6 @@ public class Segment {
 		options.addOption("p", "profile", false, "Print profile information.");
 		options.addOption("r", "preload", false, "Preload document into memory before segmentation.");
 		options.addOption("2", "twice", false, "Repeat the whole process twice.");
-		options.addOption("z", "test", false, "Test the application by running a test suite.");
 		options.addOption(null, "lookbehind", true, "Maximum length of a regular expression construct that occurs in lookbehind. Default: " + SrxTextIterator.DEFAULT_MAX_LOOKBEHIND_CONSTRUCT_LENGTH + ".");
 		options.addOption(null, "buffer-length", true, "Length of a buffer when reading text as a stream. Default: " + SrxTextIterator.DEFAULT_BUFFER_LENGTH + ".");
 		options.addOption(null, "margin", true, "If rule is matched but its position is in the margin (position > bufferLength - margin) then the matching is ignored. Default " + SrxTextIterator.DEFAULT_MARGIN + ".");
@@ -205,19 +200,6 @@ public class Segment {
 			cleanupWriter(writer);
 		}
 
-	}
-
-	private void test() {
-		JUnitCore core = new JUnitCore();
-		core.addListener(new TextListener(System.out));
-		try {
-			Class<?> klass = Class.forName(TEST_SUITE_CLASS_NAME);
-			core.run(klass);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Unable to find test suite class: "
-					+ TEST_SUITE_CLASS_NAME
-					+ ". Check that you have tests JAR in your classpath.", e);
-		}
 	}
 
 	private Reader createTextReader(CommandLine commandLine, boolean profile,

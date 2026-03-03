@@ -15,7 +15,6 @@ dependencies {
     implementation(project(":segment"))
     implementation(libs.commons.cli)
     implementation(libs.commons.logging)
-    implementation(libs.junit)
 }
 
 description = "segment-ui"

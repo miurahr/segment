@@ -1,0 +1,23 @@
+name: Quality checks
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  gradle:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-java@v5
+      with:
+        java-version: 17
+        distribution: 'temurin'
+    - uses: gradle/actions/setup-gradle@v6
+      name: Setup Gradle
+      id: setup-gradle
+    - name: Run gradle build
+      run: ./gradlew --scan check
+      id: gradle

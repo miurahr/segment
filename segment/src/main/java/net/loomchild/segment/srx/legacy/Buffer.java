@@ -7,7 +7,7 @@ package net.loomchild.segment.srx.legacy;
  */
 public class Buffer implements CharSequence {
 
-	private char[] buffer;
+	private final char[] buffer;
 	private int head;
 	private int size;
 
@@ -69,11 +69,11 @@ public class Buffer implements CharSequence {
 			throw new IndexOutOfBoundsException("Buffer index " + index
 					+ " not in <0, " + length() + ").");
 		} else {
-			char character = buffer[(head + index) % getCapacity()];
-			return character;
+            return buffer[(head + index) % getCapacity()];
 		}
 	}
 
+	@Override
 	public CharSequence subSequence(int start, int end) {
 		if (start < 0 || start > end || end > length()) {
 			throw new IndexOutOfBoundsException("Buffer subsequence " + "<"
@@ -86,6 +86,7 @@ public class Buffer implements CharSequence {
 		}
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder(size);
 		int position = head;
@@ -96,7 +97,7 @@ public class Buffer implements CharSequence {
 		return stringBuilder.toString();
 	}
 
-	private boolean isEmpty() {
+	public boolean isEmpty() {
 		return length() == 0;
 	}
 

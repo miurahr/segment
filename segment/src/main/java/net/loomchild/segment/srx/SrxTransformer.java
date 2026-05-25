@@ -24,8 +24,8 @@ public interface SrxTransformer {
 	 * @param writer writer to write transformed SRX document
 	 * @param parameterMap map containing transformation parameters
 	 */
-	public void transform(Reader reader, Writer writer,
-			Map<String, Object> parameterMap);
+    void transform(Reader reader, Writer writer,
+                   Map<String, Object> parameterMap);
 
 	/**
 	 * Transform given SRX document and return Reader containing newest
@@ -35,6 +35,6 @@ public interface SrxTransformer {
 	 * @param parameterMap map containing transformation parameters
 	 * @return reader containing SRX document in newest supported version
 	 */
-	public Reader transform(Reader reader, Map<String, Object> parameterMap);
+    Reader transform(Reader reader, Map<String, Object> parameterMap);
 
 }

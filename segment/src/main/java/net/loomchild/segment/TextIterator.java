@@ -13,18 +13,21 @@ public interface TextIterator extends Iterator<String> {
 	 * @return next segment in text, or null if end of text has been
 	 *         reached.
 	 */
-	public String next();
+	@Override
+    String next();
 
 	/**
 	 * @return true if there are more segments
 	 */
-	public boolean hasNext();
+	@Override
+    boolean hasNext();
 
 	/**
 	 * Unsupported operation.
 	 * 
 	 * @throws UnsupportedOperationException
 	 */
-	public void remove();
+	@Override
+	void remove();
 
 }

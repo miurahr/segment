@@ -134,9 +134,7 @@ public class FastTextIterator extends AbstractTextIterator {
 		this(document, languageCode, reader, new HashMap<String, Object>());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public String next() {
 		if (hasNext()) {
 			boolean found = false;
@@ -208,9 +206,7 @@ public class FastTextIterator extends AbstractTextIterator {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public boolean hasNext() {
 		return (startPosition < text.length());
 	}

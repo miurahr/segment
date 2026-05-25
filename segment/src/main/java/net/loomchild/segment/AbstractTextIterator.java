@@ -15,9 +15,7 @@ import net.loomchild.segment.srx.LanguageRule;
  */
 public abstract class AbstractTextIterator implements TextIterator {
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public void remove() {
 		throw new UnsupportedOperationException(
 				"Remove is not supported by TextIterator.");

@@ -25,10 +25,11 @@ public enum SrxVersion {
 
 	private String versionString;
 
-	private SrxVersion(String versionString) {
+	SrxVersion(String versionString) {
 		this.versionString = versionString;
 	}
 
+	@Override
 	public String toString() {
 		return versionString;
 	}

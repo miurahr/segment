@@ -181,6 +181,7 @@ public class SrxTextIterator extends AbstractTextIterator {
 	 * @throws IllegalStateException if buffer is too small to hold the segment
 	 * @throws IORuntimeException if IO error occurs when reading the text
 	 */
+	@Override
 	public String next() {
 		if (hasNext()) {
 
@@ -249,6 +250,7 @@ public class SrxTextIterator extends AbstractTextIterator {
 	/**
 	 * @return true if there are more segments
 	 */
+	@Override
 	public boolean hasNext() {
 		return (textManager.hasMoreText() || 
 				start < textManager.getText().length());

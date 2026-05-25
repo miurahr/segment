@@ -70,6 +70,7 @@ public class AccurateSrxTextIterator extends AbstractTextIterator {
 	 * @return Zwraca następny segment albo null jeśli nie istnieje
 	 * @throws IORuntimeException Zgłaszany gdy nastąpi błąd przy odczycie strumienia
 	 */
+	@Override
 	public String next() {
 		if (hasNext()) {
 			// Initialize matchers before first search.
@@ -101,6 +102,7 @@ public class AccurateSrxTextIterator extends AbstractTextIterator {
 	/**
 	 * @return Zwraca true gdy są dostępne kolejne segmenty
 	 */
+	@Override
 	public boolean hasNext() {
 		return (startPosition < text.length());
 	}

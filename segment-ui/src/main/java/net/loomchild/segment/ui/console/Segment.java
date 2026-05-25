@@ -44,8 +44,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.internal.TextListener;
-import org.junit.runner.JUnitCore;
 
 /**
  * Text user interface to splitter.

@@ -180,11 +180,13 @@ public class ScannerSrxTextIterator extends AbstractTextIterator {
 		}
 		return regex.toString();
 	}
-	
+
+	@Override
 	public boolean hasNext() {
 		return scanner.hasNext();
 	}
 
+	@Override
 	public String next() {
 		StringBuilder segment = new StringBuilder();
 		

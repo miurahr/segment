@@ -18,9 +18,9 @@ public class SrxDocument {
 
 	private boolean cascade;
 
-	private List<LanguageMap> languageMapList;
+	private final List<LanguageMap> languageMapList;
 	
-	private SrxDocumentCache cache;
+	private final SrxDocumentCache cache;
 
 	/**
 	 * Creates empty document.

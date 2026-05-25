@@ -15,15 +15,18 @@ public class TransformationErrorListener implements ErrorListener {
 	private static final Log log = LogFactory
 			.getLog(TransformationErrorListener.class);
 
+	@Override
 	public void warning(TransformerException exception) {
 		log.info("Transformation warning: " + exception.getMessage());
 	}
 
+	@Override
 	public void error(TransformerException exception)
 			throws TransformerException {
 		log.warn("Transformation error: " + exception.getMessage());
 	}
 
+	@Override
 	public void fatalError(TransformerException exception)
 			throws TransformerException {
 		throw exception;

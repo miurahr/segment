@@ -18,7 +18,7 @@ public class Version {
 	public static final String VERSION_ATTRIBUTE = "Implementation-Version";  
 	public static final String DATE_ATTRIBUTE = "Build-Date";  
 	
-	private static Version instance = new Version();
+	private static final Version instance = new Version();
 	
 	private String version;
 

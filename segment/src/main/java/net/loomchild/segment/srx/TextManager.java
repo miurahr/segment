@@ -17,9 +17,9 @@ public class TextManager {
 	
 	int nextCharacter;
 	
-	private Reader reader;
+	private final Reader reader;
 	
-	private int bufferLength;
+	private final int bufferLength;
 	
 	/** 
 	 * Creates text manager containing given text. Reading more text is not 

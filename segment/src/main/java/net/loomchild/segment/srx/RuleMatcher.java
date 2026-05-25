@@ -14,15 +14,15 @@ import net.loomchild.segment.util.Util;
 public class RuleMatcher {
 	
 	@SuppressWarnings("unused")
-	private SrxDocument document;
+	private final SrxDocument document;
 
-	private Rule rule;
+	private final Rule rule;
 	
-	private CharSequence text;
+	private final CharSequence text;
 	
-	private Matcher beforeMatcher;
+	private final Matcher beforeMatcher;
 	
-	private Matcher afterMatcher;
+	private final Matcher afterMatcher;
 	
 	boolean found;
 

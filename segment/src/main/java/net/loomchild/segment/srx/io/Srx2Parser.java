@@ -33,7 +33,7 @@ public class Srx2Parser implements SrxParser {
 	
 	private static final String SCHEMA = "net/loomchild/segment/res/xml/srx20.xsd";
 
-	private static Bind bind = createBind();
+	private static final Bind bind = createBind();
 
 	private static Bind createBind() {
         // Macintosh Java 1.5 work-around borrowed from okapi library
@@ -46,10 +46,9 @@ public class Srx2Parser implements SrxParser {
 		
 		// Must pass the ClassLoader directly due to Java 1.5 bugs when using 
 		// custom ClassLoader.
-		Bind bind = new Bind(
-				getContext(CONTEXT, Srx2Parser.class.getClassLoader()),
-				getSchema(getReader(getResourceStream(SCHEMA))));
-		return bind;
+        return new Bind(
+                getContext(CONTEXT, Srx2Parser.class.getClassLoader()),
+                getSchema(getReader(getResourceStream(SCHEMA))));
 	}
 	
 	/**

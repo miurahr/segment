@@ -54,11 +54,11 @@ public class Srx2SaxParser implements SrxParser {
 
 	private static final String SCHEMA = "net/loomchild/segment/res/xml/srx20.xsd";
 	
-	private SAXParserFactory factory;
+	private final SAXParserFactory factory;
 
 	private static class SrxHandler extends DefaultHandler {
 		
-		private SrxDocument document;
+		private final SrxDocument document;
 
 		private String elementName;
 		
@@ -74,17 +74,22 @@ public class Srx2SaxParser implements SrxParser {
 		public SrxHandler(SrxDocument document) {
 			this.document = document;
 		}
-		
+
+		@Override
 	    public void startDocument() throws SAXException {
-			languageRuleMap = new HashMap<String, LanguageRule>();
+			super.startDocument();
+			languageRuleMap = new HashMap<>();
 			beforeBreak = new StringBuilder();
 			afterBreak = new StringBuilder();
 	    	resetRule();
 	    }
 
+		@Override
 	    public void endDocument() throws SAXException {
-	    }
-		
+            super.endDocument();
+        }
+
+		@Override
 	    public void startElement(String uri, String localName, String qName, 
 	    		Attributes attributes) throws SAXException {
 	    	elementName = localName;
@@ -103,7 +108,8 @@ public class Srx2SaxParser implements SrxParser {
 				breakRule = !"no".equals(getValue(attributes, "break"));
 	    	}
 	    }
-	    
+
+		@Override
 	    public void endElement(String uri, String localName, String qName)
 	    		throws SAXException {
 	    	elementName = null;
@@ -118,6 +124,7 @@ public class Srx2SaxParser implements SrxParser {
 	    }
 
 
+		@Override
 	    public void characters(char ch[], int start, int length)
 	    		throws SAXException {
 	    	if ("beforebreak".equals(elementName)) {
@@ -140,7 +147,7 @@ public class Srx2SaxParser implements SrxParser {
 	    	throw new XmlException("Warning parsing SRX", e);
 	    }
 
-	    
+
 	    private void resetRule() {
 			breakRule = false;
     		beforeBreak.setLength(0);
@@ -188,6 +195,7 @@ public class Srx2SaxParser implements SrxParser {
 	 * @param reader
 	 * @return initialized document
 	 */
+	@Override
 	public SrxDocument parse(Reader reader) {
 		try {
 			SAXParser parser = factory.newSAXParser();

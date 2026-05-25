@@ -17,13 +17,13 @@ import net.loomchild.segment.util.Util;
 public class RuleManager {
 	
 	@SuppressWarnings("unused")
-	private SrxDocument document;
+	private final SrxDocument document;
 	
-	private int maxLookbehindConstructLength;
+	private final int maxLookbehindConstructLength;
 
-	private List<Rule> breakRuleList;
+	private final List<Rule> breakRuleList;
 	
-	private Map<Rule, Pattern> exceptionPatternMap;
+	private final Map<Rule, Pattern> exceptionPatternMap;
 	
 	/**
 	 * Constructor. Responsible for retrieving rules from SRX document for
@@ -42,8 +42,8 @@ public class RuleManager {
 		this.document = document;
 		this.maxLookbehindConstructLength = maxLookbehindConstructLength;
 		
-		this.breakRuleList = new ArrayList<Rule>();
-		this.exceptionPatternMap = new HashMap<Rule, Pattern>();
+		this.breakRuleList = new ArrayList<>();
+		this.exceptionPatternMap = new HashMap<>();
 
 		StringBuilder exceptionPatternBuilder = new StringBuilder();
 		
@@ -120,11 +120,11 @@ public class RuleManager {
 		String afterPattern = rule.getAfterPattern();
 		
 		patternBuilder.append("(?:");
-		if (beforePattern.length() > 0) {
-			patternBuilder.append("(?<=" + beforePattern + ")");
+		if (!beforePattern.isEmpty()) {
+			patternBuilder.append("(?<=").append(beforePattern).append(")");
 		}
-		if (afterPattern.length() > 0) {
-			patternBuilder.append("(?=" + afterPattern + ")");
+		if (!afterPattern.isEmpty()) {
+			patternBuilder.append("(?=").append(afterPattern).append(")");
 		}
 		patternBuilder.append(")");
 		

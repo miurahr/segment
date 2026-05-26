@@ -15,7 +15,8 @@ repositories {
 dependencies {
     implementation(project(":segment"))
     implementation(libs.commons.cli)
-    implementation(libs.commons.logging)
+    implementation(libs.slf4j.jcl)
+    runtimeOnly(libs.slf4j.simple)
 }
 
 description = "The segment CLI command."

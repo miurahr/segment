@@ -11,12 +11,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation(libs.junit)
-    implementation(libs.commons.math3)
-    implementation(libs.guava)
-}
-
 java {
     withSourcesJar()
     withJavadocJar()
@@ -31,16 +25,15 @@ repositories {
 val xjc: Configuration by configurations.creating
 
 dependencies {
-    implementation(libs.commons.logging)
     implementation(libs.jaxb4.api)
+    implementation(libs.commons.math3)
+    implementation(libs.guava)
+    implementation(libs.slf4j.jcl)
     runtimeOnly(libs.jaxb4.runtime)
-
-    "xjc"(libs.jaxb4.api)
-    "xjc"(libs.jaxb4.runtime)
+    testImplementation(libs.junit)
+    testRuntimeOnly(libs.slf4j.simple)
     "xjc"(libs.jaxb4.xjc)
-
-    // Test
-    testImplementation("junit:junit:4.13.1")
+    "xjc"(libs.jaxb4.runtime)
 }
 
 val generatedJaxbDir = layout.buildDirectory.dir("generated/xjc/main/java")

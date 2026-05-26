@@ -1,4 +1,7 @@
 # Changelog
+## 4.0.1
+
+- Migrate logging to SLF4J.
 
 ## 4.0.0
 
